@@ -8,9 +8,13 @@ from sensor_msgs.msg import NavSatFix
 
 class AirSimROSWrapper():
 
-    def __init__(self, vehicle_type="", vehicle_name="", ip="127.0.0.1", port=41451):
+    def __init__(self, vehicle_type=""):
+
         self.vehicle_type = vehicle_type
-        self.vehicle_name = vehicle_name
+        ip = rospy.get_param("~ip")
+        port = rospy.get_param("~port")
+        self.vehicle_name = rospy.get_param("~vehicle_name")
+
         if self.vehicle_type == "multirotor":
             self.client = airsim.MultirotorClient(ip=ip, port=port)
         elif self.vehicle_type == "car":
@@ -20,7 +24,7 @@ class AirSimROSWrapper():
         self.client.confirmConnection()    
 
         self.gps_pub = rospy.Publisher(f"/{self.vehicle_name}/gps_location", NavSatFix, queue_size=1)
-        self.pos_pub = rospy.Publisher(f"/{self.vehicle_name}/fused_position", PoseStamped, queue_size=1)
+        self.pos_pub = rospy.Publisher(f"/{self.vehicle_name}/fused_pose", PoseStamped, queue_size=1)
         self.vel_pub = rospy.Publisher(f"/{self.vehicle_name}/fused_velocity", Twist, queue_size=1)
         print("Publish sensor_msgs/NavSatFix: " + f"/{self.vehicle_name}/gps_location")
         print("Publish geometry_msgs/PoseStamped: " + f"/{self.vehicle_name}/fused_position")

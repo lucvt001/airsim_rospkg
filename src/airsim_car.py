@@ -6,9 +6,9 @@ import time
 
 class AirSimROSCar(AirSimROSWrapper):
 
-    def __init__(self, vehicle_name="", ip="127.0.0.1", port=41452, control_timeout=1):
+    def __init__(self, control_timeout=1):
 
-        super().__init__(vehicle_type="car", vehicle_name=vehicle_name, ip=ip, port=port)
+        super().__init__(vehicle_type="car")
         self.control_timeout = control_timeout
     
     def run(self):
@@ -50,11 +50,8 @@ if __name__ == "__main__":
 
     print("Starting AirSim ROS Car node...")
     rospy.init_node("airsim_ros_car")
-    ip = rospy.get_param("/airsim/ip")
-    vehicle_name = rospy.get_param("/airsim/car_name")
-    port = rospy.get_param("/airsim/car_port")
 
-    airsim_ros_car = AirSimROSCar(vehicle_name, ip, port)
+    airsim_ros_car = AirSimROSCar()
     airsim_ros_car.armDisarm(True)
     time.sleep(3)
 

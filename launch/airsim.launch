@@ -1,24 +1,24 @@
 <launch>
 
-    <param name="/airsim/ip" value="172.23.80.1"/>
-
-    <param name="/airsim/multirotor_name" value="drone"/>
-    <param name="/airsim/multirotor_port" value="41451"/>
-
-    <param name="/airsim/car_name" value="car"/>
-    <param name="/airsim/car_port" value="41452"/>
-
     <!-- Start the AirSim ROS Multirotor node -->
-    <node name="airsim_ros_multirotor" pkg="airsim_rospkg" type="airsim_multirotor.py" output="screen"/>
+    <node name="airsim_multirotor" pkg="airsim_rospkg" type="airsim_multirotor.py" output="screen">
+        <param name="ip" type="string" value="172.23.80.1"/>
+        <param name="port" type="int" value="41451"/>
+        <param name="vehicle_name" type="string" value="drone"/>
+    </node>
 
     <!-- Start the AirSim ROS Car node -->
-    <node name="airsim_ros_car" pkg="airsim_rospkg" type="airsim_car.py" output="screen"/>
+    <node name="airsim_car" pkg="airsim_rospkg" type="airsim_car.py" output="screen">
+        <param name="ip" type="string" value="172.23.80.1"/>
+        <param name="port" type="int" value="41452"/>
+        <param name="vehicle_name" type="string" value="car"/>
+    </node>
 
     <!-- Launch rqt_plot to plot specific topics -->
-    <node name="rqt_plot_1" pkg="rqt_plot" type="rqt_plot" 
+    <!-- <node name="rqt_plot_1" pkg="rqt_plot" type="rqt_plot" 
         args="/drone/fused_position/pose/position/x /car/fused_position/pose/position/x" output="screen"/>
 
     <node name="rqt_plot_2" pkg="rqt_plot" type="rqt_plot" 
-        args="/drone/fused_position/pose/position/y /car/fused_position/pose/position/y" output="screen"/>
+        args="/drone/fused_position/pose/position/y /car/fused_position/pose/position/y" output="screen"/> -->
 
 </launch>

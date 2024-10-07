@@ -8,9 +8,9 @@ from std_msgs.msg import Float32
 
 class AirSimROSMultirotor(AirSimROSWrapper):
 
-    def __init__(self, vehicle_name="", ip="127.0.0.1", port=41451, control_timeout=1):
+    def __init__(self, control_timeout=1):
 
-        super().__init__(vehicle_type="multirotor", vehicle_name=vehicle_name, ip=ip, port=port)
+        super().__init__(vehicle_type="multirotor")
         self.control_timeout = control_timeout
 
         # For correct behaviour, the control commands should be published at a rate faster than control_timeout
@@ -96,11 +96,8 @@ class AirSimROSMultirotor(AirSimROSWrapper):
 if __name__ == "__main__":
     print("Starting AirSim ROS Multirotor node...")
     rospy.init_node("airsim_ros_multirotor")
-    ip = rospy.get_param("/airsim/ip")
-    vehicle_name = rospy.get_param("/airsim/multirotor_name")
-    port = rospy.get_param("/airsim/multirotor_port")
 
-    airsim_ros_multirotor = AirSimROSMultirotor(vehicle_name, ip, port)
+    airsim_ros_multirotor = AirSimROSMultirotor()
     airsim_ros_multirotor.armDisarm(True)
     airsim_ros_multirotor.takeoff()
     
