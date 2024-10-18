@@ -47,7 +47,7 @@ class AirSimROSWrapper():
 
         self.gps_pub.publish(gps_msg)
 
-    def publish_fused_position(self):
+    def publish_fused_pose(self):
         fused_position = self.kinematic_estimated.position
         fused_orientation = self.kinematic_estimated.orientation
 
@@ -95,7 +95,7 @@ class AirSimROSWrapper():
     def publish_sim_data(self):
         self.get_vehicle_estimated_state()
         self.publish_gps_location()
-        self.publish_fused_position()
+        self.publish_fused_pose()
         self.publish_fused_velocity()
         self.publish_tf()
 

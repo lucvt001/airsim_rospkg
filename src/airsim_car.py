@@ -53,7 +53,11 @@ if __name__ == "__main__":
 
     airsim_ros_car = AirSimROSCar()
     airsim_ros_car.armDisarm(True)
-    time.sleep(3)
+    time.sleep(4)
+    t = time.time()
+    while time.time() - t < 7:
+        airsim_ros_car.publish_sim_data()
+        rospy.sleep(0.1)
 
     try:
         airsim_ros_car.run()

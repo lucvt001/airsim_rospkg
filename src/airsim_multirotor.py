@@ -33,7 +33,7 @@ class AirSimROSMultirotor(AirSimROSWrapper):
             linear_vel.x, linear_vel.y, linear_vel.z, 
             self.control_timeout,   # timeout after which the vehicle will hover in place
             airsim.DrivetrainType.MaxDegreeOfFreedom, 
-            airsim.YawMode(False, angular_vel.z),
+            airsim.YawMode(True, angular_vel.z),
             self.vehicle_name
         )
         
@@ -44,7 +44,7 @@ class AirSimROSMultirotor(AirSimROSWrapper):
             linear_vel.x, linear_vel.y, linear_vel.z, 
             self.control_timeout,   # timeout after which the vehicle will hover in place
             airsim.DrivetrainType.MaxDegreeOfFreedom, 
-            airsim.YawMode(False, angular_vel.z),
+            airsim.YawMode(True, angular_vel.z),
             self.vehicle_name
         )
         

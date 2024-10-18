@@ -16,9 +16,9 @@
 
     <!-- Launch rqt_plot to plot specific topics -->
     <!-- <node name="rqt_plot_1" pkg="rqt_plot" type="rqt_plot" 
-        args="/drone/fused_position/pose/position/x /car/fused_position/pose/position/x" output="screen"/>
+        args="/drone/fused_pose/pose/position/x /car/fused_pose/pose/position/x" output="screen"/> -->
 
-    <node name="rqt_plot_2" pkg="rqt_plot" type="rqt_plot" 
-        args="/drone/fused_position/pose/position/y /car/fused_position/pose/position/y" output="screen"/> -->
+    <!-- <node name="rqt_plot_2" pkg="rqt_plot" type="rqt_plot" 
+        args="/drone/fused_pose/pose/position/y /car/fused_pose/pose/position/y" output="screen"/> -->
 
 </launch>
