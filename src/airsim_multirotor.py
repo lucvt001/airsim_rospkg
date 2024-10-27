@@ -5,6 +5,7 @@ import rospy
 from geometry_msgs.msg import Twist, PoseStamped
 from sensor_msgs.msg import NavSatFix
 from std_msgs.msg import Float32
+import cv2
 
 class AirSimROSMultirotor(AirSimROSWrapper):
 
@@ -29,24 +30,30 @@ class AirSimROSMultirotor(AirSimROSWrapper):
     def cmd_vel_body_callback(self, msg):
         linear_vel = msg.linear
         angular_vel = msg.angular
-        self.client.moveByVelocityBodyFrameAsync(
-            linear_vel.x, linear_vel.y, linear_vel.z, 
-            self.control_timeout,   # timeout after which the vehicle will hover in place
-            airsim.DrivetrainType.MaxDegreeOfFreedom, 
-            airsim.YawMode(True, angular_vel.z),
-            self.vehicle_name
-        )
+        try:
+            self.client.moveByVelocityBodyFrameAsync(
+                linear_vel.x, linear_vel.y, linear_vel.z, 
+                self.control_timeout,   # timeout after which the vehicle will hover in place
+                airsim.DrivetrainType.MaxDegreeOfFreedom, 
+                airsim.YawMode(True, angular_vel.z),
+                self.vehicle_name
+            )
+        except:
+            pass
         
     def cmd_vel_world_callback(self, msg):
         linear_vel = msg.linear
         angular_vel = msg.angular
-        self.client.moveByVelocityAsync(
-            linear_vel.x, linear_vel.y, linear_vel.z, 
-            self.control_timeout,   # timeout after which the vehicle will hover in place
-            airsim.DrivetrainType.MaxDegreeOfFreedom, 
-            airsim.YawMode(True, angular_vel.z),
-            self.vehicle_name
-        )
+        try:
+            self.client.moveByVelocityAsync(
+                linear_vel.x, linear_vel.y, linear_vel.z, 
+                self.control_timeout,   # timeout after which the vehicle will hover in place
+                airsim.DrivetrainType.MaxDegreeOfFreedom, 
+                airsim.YawMode(True, angular_vel.z),
+                self.vehicle_name
+            )
+        except:
+            pass
         
     def move_to_gps_callback(self, msg):
         rospy.loginfo("Moving to GPS...")
@@ -60,22 +67,28 @@ class AirSimROSMultirotor(AirSimROSWrapper):
     
     def move_to_position_callback(self, msg):
         rospy.loginfo("Moving to position...")
-        self.client.moveToPositionAsync(
-            msg.position.x, msg.position.y, msg.position.z,
-            velocity=5,
-            drivetrain=airsim.DrivetrainType.MaxDegreeOfFreedom, 
-            vehicle_name=self.vehicle_name
-        ).join()
-        rospy.loginfo("Move to position complete.")
+        try:
+            self.client.moveToPositionAsync(
+                msg.position.x, msg.position.y, msg.position.z,
+                velocity=5,
+                drivetrain=airsim.DrivetrainType.MaxDegreeOfFreedom, 
+                vehicle_name=self.vehicle_name
+            ).join()
+            rospy.loginfo("Move to position complete.")
+        except:
+            pass
 
     def move_to_altitude_callback(self, msg):
         rospy.loginfo("Moving to altitude...")
-        self.client.moveToZAsync(
-            z=msg.data, 
-            velocity=5,
-            vehicle_name=self.vehicle_name
-        ).join()
-        rospy.loginfo("Move to altitude complete.")
+        try:
+            self.client.moveToZAsync(
+                z=msg.data, 
+                velocity=5,
+                vehicle_name=self.vehicle_name
+            ).join()
+            rospy.loginfo("Move to altitude complete.")
+        except:
+            pass
 
     def takeoff(self):
         rospy.loginfo("Taking off...")
@@ -90,7 +103,13 @@ class AirSimROSMultirotor(AirSimROSWrapper):
     def run(self):
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
-            self.publish_sim_data()
+            try:
+                self.publish_sim_data()
+                image = self.get_image()
+                cv2.imshow("Image", image)
+                cv2.waitKey(1)
+            except:
+                pass
             rate.sleep()
     
 if __name__ == "__main__":
